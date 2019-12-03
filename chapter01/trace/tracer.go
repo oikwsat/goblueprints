@@ -1,0 +1,15 @@
+package trace
+
+import (
+	"fmt"
+	"io"
+)
+
+type tracer struct {
+	out io.Writer
+}
+
+func (t *tracer) Trace(a ...interface{}) {
+	t.out.Write([]byte(fmt.Sprint(a...)))
+	t.out.Write([]byte("\n"))
+}
