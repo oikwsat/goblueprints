@@ -11,6 +11,7 @@ go test -cover
 2. build
 ```
 cd chapter01/chat
+go get github.com/stretchr/gomniauth/
 go build -o chat
 ./chat
 ```
