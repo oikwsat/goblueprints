@@ -80,14 +80,19 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 			log.Fatalln("ユーザーの取得に失敗しました", user, "-", err)
 		}
 
+		chatUser := &chatUser{User: user}
 		m := md5.New()
 		io.WriteString(m, strings.ToLower(user.Name()))
-		userID := fmt.Sprintf("%x", m.Sum(nil))
+		chatUser.uniqueID = fmt.Sprintf("%x", m.Sum(nil))
+		avatarURL, err := avatars.GetAvatarURL(chatUser)
+		if err != nil {
+			log.Fatalln("GetAvatarURLに失敗しました", "-", err)
+		}
 		// データを保存します
 		authCookieValue := objx.New(map[string]interface{}{
-			"userid":     userID,
+			"userid":     chatUser.UniqueID,
 			"name":       user.Name(),
-			"avatar_url": user.AvatarURL(),
+			"avatar_url": avatarURL,
 			"email":      user.Email(),
 		}).MustBase64()
 		http.SetCookie(w, &http.Cookie{
