@@ -26,7 +26,7 @@ type chatUser struct {
 }
 
 func (u chatUser) UniqueID() string {
-	return u.UniqueID
+	return u.UniqueID()
 }
 
 type authHandler struct {
