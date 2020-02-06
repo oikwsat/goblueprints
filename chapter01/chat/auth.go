@@ -26,7 +26,7 @@ type chatUser struct {
 }
 
 func (u chatUser) UniqueID() string {
-	return u.UniqueID()
+	return u.uniqueID
 }
 
 type authHandler struct {
@@ -90,10 +90,9 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		// データを保存します
 		authCookieValue := objx.New(map[string]interface{}{
-			"userid":     chatUser.UniqueID,
+			"userid":     chatUser.uniqueID,
 			"name":       user.Name(),
 			"avatar_url": avatarURL,
-			"email":      user.Email(),
 		}).MustBase64()
 		http.SetCookie(w, &http.Cookie{
 			Name:  "auth",
